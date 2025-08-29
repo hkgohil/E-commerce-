@@ -34,86 +34,89 @@ function AdminOrderDetailsView({ orderDetails }) {
         dispatch(getOrderDetailsForAdmin(orderDetails?._id));
         dispatch(getAllOrdersForAdmin());
         setFormData(initialFormData);
-        toast({
-          title: data?.payload?.message,
-        });
+        toast.success(data?.payload?.message);
       }
     });
   }
 
   return (
-    <DialogContent className="sm:max-w-[600px]">
+    <DialogContent className="sm:max-w-[600px] bg-white border border-black">
       <div className="grid gap-6">
-        <div className="grid gap-2">
-          <div className="flex mt-6 items-center justify-between">
-            <p className="font-medium">Order ID</p>
-            <Label>{orderDetails?._id}</Label>
+        <div className="grid gap-4">
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <p className="font-semibold text-black">Order ID</p>
+            <Label className="text-black font-mono text-sm">{orderDetails?._id}</Label>
           </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Date</p>
-            <Label>{orderDetails?.orderDate.split("T")[0]}</Label>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <p className="font-semibold text-black">Order Date</p>
+            <Label className="text-black">{orderDetails?.orderDate.split("T")[0]}</Label>
           </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Price</p>
-            <Label>${orderDetails?.totalAmount}</Label>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <p className="font-semibold text-black">Order Price</p>
+            <Label className="text-black font-bold">${orderDetails?.totalAmount}</Label>
           </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Payment method</p>
-            <Label>{orderDetails?.paymentMethod}</Label>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <p className="font-semibold text-black">Payment method</p>
+            <Label className="text-black">{orderDetails?.paymentMethod}</Label>
           </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Payment Status</p>
-            <Label>{orderDetails?.paymentStatus}</Label>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <p className="font-semibold text-black">Payment Status</p>
+            <Label className="text-black">{orderDetails?.paymentStatus}</Label>
           </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Status</p>
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <p className="font-semibold text-black">Order Status</p>
             <Label>
               <Badge
-                className={`py-1 px-3 ${
+                variant={
                   orderDetails?.orderStatus === "confirmed"
-                    ? "bg-green-500"
+                    ? "default"
                     : orderDetails?.orderStatus === "rejected"
-                    ? "bg-red-600"
-                    : "bg-black"
-                }`}
+                    ? "destructive"
+                    : "outline"
+                }
+                className="py-1 px-3 border border-black"
               >
                 {orderDetails?.orderStatus}
               </Badge>
             </Label>
           </div>
         </div>
-        <Separator />
+        <Separator className="bg-black" />
         <div className="grid gap-4">
-          <div className="grid gap-2">
-            <div className="font-medium">Order Details</div>
+          <div className="grid gap-3">
+            <div className="font-semibold text-black text-lg">Order Details</div>
             <ul className="grid gap-3">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
-                ? orderDetails?.cartItems.map((item) => (
-                    <li className="flex items-center justify-between">
-                      <span>Title: {item.title}</span>
-                      <span>Quantity: {item.quantity}</span>
-                      <span>Price: ${item.price}</span>
+                ? orderDetails?.cartItems.map((item, index) => (
+                    <li key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <span className="text-black font-medium">{item.title}</span>
+                      <span className="text-black">Qty: {item.quantity}</span>
+                      <span className="text-black font-semibold">${item.price}</span>
                     </li>
                   ))
-                : null}
+                : (
+                  <li className="text-center text-gray-500 py-4">No items found</li>
+                )}
             </ul>
           </div>
         </div>
         <div className="grid gap-4">
-          <div className="grid gap-2">
-            <div className="font-medium">Shipping Info</div>
-            <div className="grid gap-0.5 text-muted-foreground">
-              <span>{user.userName}</span>
-              <span>{orderDetails?.addressInfo?.address}</span>
-              <span>{orderDetails?.addressInfo?.city}</span>
-              <span>{orderDetails?.addressInfo?.pincode}</span>
-              <span>{orderDetails?.addressInfo?.phone}</span>
-              <span>{orderDetails?.addressInfo?.notes}</span>
+          <div className="grid gap-3">
+            <div className="font-semibold text-black text-lg">Shipping Info</div>
+            <div className="grid gap-2 p-3 bg-gray-50 rounded-lg">
+              <span className="text-black font-medium">{user?.userName}</span>
+              <span className="text-black">{orderDetails?.addressInfo?.address}</span>
+              <span className="text-black">{orderDetails?.addressInfo?.city}</span>
+              <span className="text-black">{orderDetails?.addressInfo?.pincode}</span>
+              <span className="text-black">{orderDetails?.addressInfo?.phone}</span>
+              {orderDetails?.addressInfo?.notes && (
+                <span className="text-black">{orderDetails?.addressInfo?.notes}</span>
+              )}
             </div>
           </div>
         </div>
 
-        <div>
+        <div className="border-t border-black pt-4">
           <CommonForm
             formControls={[
               {

@@ -1,21 +1,22 @@
-import ProductFilter from "@/components/shopping-view/filter";
-import ProductDetailsDialog from "@/components/shopping-view/product-details";
-import ShoppingProductTile from "@/components/shopping-view/product-tile";
-import { Button } from "@/components/ui/button";
+import ProductFilter from "../../components/shopping-view/filter";
+import ProductDetailsDialog from "../../components/shopping-view/product-details";
+import ShoppingProductTile from "../../components/shopping-view/product-tile";
+import { Button } from "../../components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "../../components/ui/dropdown-menu";
 import { toast } from "sonner";
-import { sortOptions } from "@/config";
-import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { sortOptions } from "../../config";
+import { addToCart, fetchCartItems } from "../../store/shop/cart-slice";
 import {
   fetchAllFilteredProducts,
   fetchProductDetails,
-} from "@/store/shop/products-slice";
+} from "../../store/shop/products-slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,7 +125,7 @@ function ShoppingListing() {
       const createQueryString = createSearchParamsHelper(filters);
       setSearchParams(new URLSearchParams(createQueryString));
     }
-  }, [filters]);
+  }, [filters, setSearchParams]);
 
   useEffect(() => {
     if (filters !== null && sort !== null)
@@ -140,13 +141,13 @@ function ShoppingListing() {
   console.log(productList, "productListproductListproductList");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
+    <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8 p-6 md:p-8">
       <ProductFilter filters={filters} handleFilter={handleFilter} />
-      <div className="bg-background w-full rounded-lg shadow-sm">
-        <div className="p-4 border-b flex items-center justify-between">
-          <h2 className="text-lg font-extrabold">All Products</h2>
-          <div className="flex items-center gap-3">
-            <span className="text-muted-foreground">
+      <div className="bg-white w-full rounded-lg border border-black shadow-sm">
+        <div className="p-6 border-b border-black flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-black">All Products</h2>
+          <div className="flex items-center gap-4">
+            <span className="text-black font-medium">
               {productList?.length} Products
             </span>
             <DropdownMenu>
@@ -154,18 +155,19 @@ function ShoppingListing() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-2 border border-black hover:bg-gray-100"
                 >
                   <ArrowUpDownIcon className="h-4 w-4" />
                   <span>Sort by</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[200px]">
+              <DropdownMenuContent align="end" className="w-[200px] border border-black">
                 <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
                   {sortOptions.map((sortItem) => (
                     <DropdownMenuRadioItem
                       value={sortItem.id}
                       key={sortItem.id}
+                      className="hover:bg-gray-100"
                     >
                       {sortItem.label}
                     </DropdownMenuRadioItem>
@@ -175,7 +177,7 @@ function ShoppingListing() {
             </DropdownMenu>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
           {productList && productList.length > 0
             ? productList.map((productItem, idx) => (
                 <ShoppingProductTile
@@ -185,7 +187,15 @@ function ShoppingListing() {
                   handleAddtoCart={handleAddtoCart}
                 />
               ))
-            : null}
+            : (
+              <div className="col-span-full text-center py-16">
+                <div className="animate-pulse">
+                  <div className="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-6"></div>
+                  <div className="h-6 bg-gray-200 rounded w-64 mx-auto mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-48 mx-auto"></div>
+                </div>
+              </div>
+            )}
         </div>
       </div>
       <ProductDetailsDialog

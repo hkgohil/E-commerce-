@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const Address = require("../../models/Address");
+import mongoose from "mongoose";
+import Address from "../../models/Address.js";
 
 const addAddress = async (req, res) => {
   try {
@@ -152,4 +152,4 @@ const fetchAllAddresses = async (req, res) => {
   }
 };
 
-module.exports = { addAddress, editAddress, fetchAllAddress, deleteAddress, fetchAllAddresses };
+export { addAddress, editAddress, fetchAllAddress, deleteAddress, fetchAllAddresses };

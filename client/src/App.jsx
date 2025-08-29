@@ -14,12 +14,16 @@ import Shoppinghome from './pages/Shopping-view/home';
 import Shoppinglisting from './pages/Shopping-view/listing';
 import ShoppingCheckout from './pages/Shopping-view/checkout';
 import Shoppingaccount from './pages/Shopping-view/account';
+import SearchProducts from './pages/Shopping-view/search';
+import PaypalReturnPage from './pages/Shopping-view/paypal-return';
+import PaypalCancelPage from './pages/Shopping-view/paypal-cancel';
 import CheckAuth from './components/common/check-auth';
 import UnAuthPage from './pages/unauth-page';
 import { useSelector, useDispatch } from 'react-redux';
 import { checkAuth } from './store/auth-slice';
 import { useEffect } from 'react';
 import { Skeleton } from './components/ui/skeleton';
+import WishlistPage from "./pages/Shopping-view/wishlist";
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -36,7 +40,7 @@ function App() {
   console.log(isLoading, user);
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white">
+    <div className="flex flex-col overflow-hidden">
       <Routes>
         <Route path="/auth" element={ 
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
@@ -65,6 +69,10 @@ function App() {
           <Route path="listing" element={<Shoppinglisting/>}/>
            <Route path="checkout" element={<ShoppingCheckout/>}/>
             <Route path="account" element={<Shoppingaccount/>}/>
+            <Route path="search" element={<SearchProducts/>}/>
+            <Route path="wishlist" element={<WishlistPage />} />
+            <Route path="paypal-return" element={<PaypalReturnPage />} />
+            <Route path="paypal-cancel" element={<PaypalCancelPage />} />
         </Route>
         <Route path="*" element={<NotFound/>}/>
         <Route path="/unauth-page" element={<UnAuthPage/>}/>

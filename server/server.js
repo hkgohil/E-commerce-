@@ -1,19 +1,19 @@
-const express =require('express')
-const mongoose =require ('mongoose')
-const cookieParser = require('cookie-parser');
-const cors =require('cors')
-const authRouter = require("./Routes/auth/auth-routes");
-const adminProductsRouter = require("./Routes/admin/products-routes");
-const adminOrderRouter = require("./Routes/admin/order-routes");
+import express from 'express';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import authRouter from "./Routes/auth/auth-routes.js";
+import adminProductsRouter from "./Routes/admin/products-routes.js";
+import adminOrderRouter from "./Routes/admin/order-routes.js";
+import shopProductsRouter from "./Routes/shop/products-routes.js";
+import shopCartRouter from "./Routes/shop/cart-routes.js";
+import shopAddressRouter from "./Routes/shop/address-routes.js";
+import shopOrderRouter from "./Routes/shop/order-routes.js";
+import shopSearchRouter from "./Routes/shop/search-routes.js";
+import shopReviewRouter from "./Routes/shop/review-routes.js";
+import commonFeatureRouter from "./Routes/common/feature-routes.js";
 
-const shopProductsRouter = require("./Routes/shop/products-routes");
-const shopCartRouter = require("./Routes/shop/cart-routes");
-const shopAddressRouter = require("./Routes/shop/address-routes");
-const shopOrderRouter = require("./Routes/shop/order-routes");
-const shopSearchRouter = require("./Routes/shop/search-routes");
-const shopReviewRouter = require("./Routes/shop/review-routes");
-
-const commonFeatureRouter = require("./Routes/common/feature-routes");
+console.log("All routes imported successfully");
 
 mongoose.connect('mongodb+srv://hkgohil:hkgohil2025@cluster0.8vitreu.mongodb.net/').then(()=>console.log('MongoDB connected ')).catch((error)=>console.log(error));
 const app=express()
@@ -41,6 +41,49 @@ app.use(express.json());
 // Add a test route to verify server is working
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Server is running!' });
+});
+
+// Add a test route for order creation
+app.post('/api/test-order', (req, res) => {
+  console.log('Test order endpoint hit:', req.body);
+  res.json({ 
+    success: true, 
+    message: 'Test order endpoint working',
+    receivedData: req.body 
+  });
+});
+
+// Add a PayPal test endpoint
+app.get('/api/test-paypal', async (req, res) => {
+  try {
+    const paypal = await import('./helper/paypal.js');
+    console.log('PayPal module loaded successfully');
+    
+    // Test PayPal configuration
+    paypal.default.payment.get('test', (error, payment) => {
+      if (error) {
+        console.log("PayPal test failed (this is normal):", error.message);
+        res.json({ 
+          success: false, 
+          message: 'PayPal test failed (this is normal for invalid payment ID)',
+          error: error.message 
+        });
+      } else {
+        console.log("PayPal test successful");
+        res.json({ 
+          success: true, 
+          message: 'PayPal configuration is working' 
+        });
+      }
+    });
+  } catch (error) {
+    console.log('PayPal test error:', error);
+    res.json({ 
+      success: false, 
+      message: 'PayPal module failed to load',
+      error: error.message 
+    });
+  }
 });
 
 app.use("/api/auth", authRouter);

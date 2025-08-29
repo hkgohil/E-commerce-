@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonForm from "../../components/common/form";
-import { registerUser } from "@/store/auth-slice";
+import { registerUser } from "../../store/auth-slice";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
@@ -39,34 +39,33 @@ const registerFormControls = [
 ];
 
 function AuthRegister() {
-    const [formData, setFormData] = useState(initialState);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    function onSubmit(event) {
-      event.preventDefault();
-      dispatch(registerUser(formData)).then((data) => {
-        if (data?.payload?.success) {
-          toast(data?.payload?.message);
-          navigate("/auth/login");
-        } else {
-          toast.error(data?.payload?.message);
-        }
-      });
-    }
+  function onSubmit(event) {
+    event.preventDefault();
+    dispatch(registerUser(formData)).then((data) => {
+      if (data?.payload?.success) {
+        toast.success(data?.payload?.message);
+        navigate("/auth/login");
+      } else {
+        toast.error(data?.payload?.message);
+      }
+    });
+  }
 
-    console.log(formData);
-
-    return (
-      <div className="mx-auto w-full max-w-md space-y-6">
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center bg-white">
+      <div className="w-full max-w-md space-y-8 p-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-black">
             Create new account
           </h1>
-          <p className="mt-2">
+          <p className="mt-2 text-black">
             Already have an account
             <Link
-              className="font-medium ml-2 text-primary hover:underline"
+              className="font-medium ml-2 text-black hover:underline hover:text-gray-700"
               to="/auth/login"
             >
               Login
@@ -81,7 +80,8 @@ function AuthRegister() {
           onSubmit={onSubmit}
         />
       </div>
-    );
+    </div>
+  );
 }
 
 export default AuthRegister;

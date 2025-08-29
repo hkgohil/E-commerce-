@@ -1,5 +1,5 @@
-const express = require("express");
-const { addProductReview, getProductReviews } = require("../../controllers/shop/product-review-controller");
+import express from "express";
+import { addProductReview, getProductReviews } from "../../controllers/shop/product-review-controller.js";
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.post("/add", addProductReview);
 // Route to get reviews for a product
 router.get("/:productId", getProductReviews);
 
-module.exports = router; 
+export default router; 

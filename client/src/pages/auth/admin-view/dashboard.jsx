@@ -1,4 +1,4 @@
-function Admindashboard(params) {
+function Admindashboard() {
     return (
         <div>
             Admindashboard

@@ -16,7 +16,7 @@ import {
   getAllOrdersByUserId,
   getOrderDetails,
   resetOrderDetails,
-} from "@/store/shop/order-slice";
+} from "../../store/shop/order-slice";
 import { Badge } from "../ui/badge";
 
 function ShoppingOrders() {
@@ -31,7 +31,7 @@ function ShoppingOrders() {
 
   useEffect(() => {
     dispatch(getAllOrdersByUserId(user?.id));
-  }, [dispatch]);
+  }, [dispatch, user?.id]);
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
@@ -40,66 +40,78 @@ function ShoppingOrders() {
   console.log(orderDetails, "orderDetails");
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Order History</CardTitle>
+    <Card className="border border-black">
+      <CardHeader className="border-b border-black">
+        <CardTitle className="text-2xl font-bold text-black">Order History</CardTitle>
       </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Order Date</TableHead>
-              <TableHead>Order Status</TableHead>
-              <TableHead>Order Price</TableHead>
-              <TableHead>
-                <span className="sr-only">Details</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {orderList && orderList.length > 0
-              ? orderList.map((orderItem) => (
-                  <TableRow>
-                    <TableCell>{orderItem?._id}</TableCell>
-                    <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
-                    <TableCell>
-                      <Badge
-                        className={`py-1 px-3 ${
-                          orderItem?.orderStatus === "confirmed"
-                            ? "bg-green-500"
-                            : orderItem?.orderStatus === "rejected"
-                            ? "bg-red-600"
-                            : "bg-black"
-                        }`}
+      <CardContent className="p-6">
+        {orderList && orderList.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="text-black font-semibold">Order ID</TableHead>
+                <TableHead className="text-black font-semibold">Order Date</TableHead>
+                <TableHead className="text-black font-semibold">Order Status</TableHead>
+                <TableHead className="text-black font-semibold">Order Price</TableHead>
+                <TableHead className="text-black font-semibold">
+                  <span className="sr-only">Details</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {orderList.map((orderItem) => (
+                <TableRow key={orderItem._id} className="hover:bg-gray-50">
+                  <TableCell className="font-mono text-sm text-black">{orderItem?._id}</TableCell>
+                  <TableCell className="text-black">{orderItem?.orderDate.split("T")[0]}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        orderItem?.orderStatus === "confirmed"
+                          ? "default"
+                          : orderItem?.orderStatus === "rejected"
+                          ? "destructive"
+                          : "outline"
+                      }
+                      className="py-1 px-3 border border-black"
+                    >
+                      {orderItem?.orderStatus}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="font-semibold text-black">${orderItem?.totalAmount}</TableCell>
+                  <TableCell>
+                    <Dialog
+                      open={openDetailsDialog}
+                      onOpenChange={() => {
+                        setOpenDetailsDialog(false);
+                        dispatch(resetOrderDetails());
+                      }}
+                    >
+                      <Button
+                        onClick={() =>
+                          handleFetchOrderDetails(orderItem?._id)
+                        }
+                        className="bg-black text-white hover:bg-gray-800"
                       >
-                        {orderItem?.orderStatus}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
-                    <TableCell>
-                      <Dialog
-                        open={openDetailsDialog}
-                        onOpenChange={() => {
-                          setOpenDetailsDialog(false);
-                          dispatch(resetOrderDetails());
-                        }}
-                      >
-                        <Button
-                          onClick={() =>
-                            handleFetchOrderDetails(orderItem?._id)
-                          }
-                        >
-                          View Details
-                        </Button>
-                        <ShoppingOrderDetailsView orderDetails={orderDetails} />
-                      </Dialog>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : null}
-          </TableBody>
-        </Table>
+                        View Details
+                      </Button>
+                      <ShoppingOrderDetailsView orderDetails={orderDetails} />
+                    </Dialog>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <div className="text-center py-12">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-black mb-2">No orders yet</h3>
+            <p className="text-gray-600">You haven't placed any orders yet. Start shopping to see your order history here.</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

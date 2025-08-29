@@ -1,4 +1,4 @@
-function AdminFeatures(params) {
+function AdminFeatures() {
     return (
         <div>
             AdminFeauters

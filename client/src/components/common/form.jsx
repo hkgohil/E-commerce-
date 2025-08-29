@@ -99,15 +99,19 @@ function CommonForm({
 
   return (
     <form onSubmit={onSubmit}>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         {formControls.map((controlItem) => (
-          <div className="grid w-full gap-1.5" key={controlItem.name}>
-            <label className="mb-1 text-sm font-medium">{controlItem.label}</label>
+          <div className="grid w-full gap-2" key={controlItem.name}>
+            <label className="text-sm font-semibold text-black">{controlItem.label}</label>
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
       </div>
-      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+      <Button 
+        disabled={isBtnDisabled} 
+        type="submit" 
+        className="mt-6 w-full bg-black text-white hover:bg-gray-800 py-3 text-lg font-semibold rounded-lg transition-all duration-300"
+      >
         {buttonText || "Submit"}
       </Button>
     </form>

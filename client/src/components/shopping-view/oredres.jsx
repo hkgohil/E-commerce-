@@ -31,7 +31,7 @@ function ShoppingOrders() {
 
   useEffect(() => {
     dispatch(getAllOrdersByUserId(user?.id));
-  }, [dispatch]);
+  }, [dispatch, user?.id]);
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
@@ -65,13 +65,14 @@ function ShoppingOrders() {
                     <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
                     <TableCell>
                       <Badge
-                        className={`py-1 px-3 ${
+                        variant={
                           orderItem?.orderStatus === "confirmed"
-                            ? "bg-green-500"
+                            ? "default"
                             : orderItem?.orderStatus === "rejected"
-                            ? "bg-red-600"
-                            : "bg-black"
-                        }`}
+                            ? "destructive"
+                            : "black"
+                        }
+                        className="py-1 px-3"
                       >
                         {orderItem?.orderStatus}
                       </Badge>

@@ -1,5 +1,5 @@
-const { imageUploadUtil } = require("../../helper/cloudinary");
-const Product = require("../../models/Product");
+import { imageUploadUtil } from "../../helper/cloudinary.js";
+import Product from "../../models/Product.js";
 
 const handleImageUpload = async (req, res) => {
   try {
@@ -153,10 +153,4 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = {
-  handleImageUpload,
-  addProduct,
-  fetchAllProducts,
-  editProduct,
-  deleteProduct,
-};
+export { handleImageUpload, addProduct, fetchAllProducts, editProduct, deleteProduct };

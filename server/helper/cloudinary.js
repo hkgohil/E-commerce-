@@ -1,5 +1,7 @@
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
+import cloudinaryModule from "cloudinary";
+import multer from "multer";
+
+const cloudinary = cloudinaryModule.v2;
 
 cloudinary.config({
   cloud_name: "dxmaiuu9d",
@@ -19,4 +21,4 @@ async function imageUploadUtil(file) {
 
 const upload = multer({ storage });
 
-module.exports = { upload, imageUploadUtil };
+export { upload, imageUploadUtil };

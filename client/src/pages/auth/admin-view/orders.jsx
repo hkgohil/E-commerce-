@@ -1,4 +1,4 @@
-function AdminOrders(params) {
+function AdminOrders() {
     return (
         <div>
             AdminOrders

@@ -1,10 +1,10 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   registerUser,
   loginUser,
   logoutUser,
   authMiddleware,
-} = require("../../controllers/auth/authcontroller");
+} from "../../controllers/auth/authcontroller.js";
 
 const router = express.Router();
 
@@ -20,4 +20,4 @@ router.get("/check-auth", authMiddleware, (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

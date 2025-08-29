@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import CommonForm from "../common/form";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { addressFormControls } from "@/config";
+import { addressFormControls } from "../../config";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addNewAddress,
   deleteAddress,
   editaAddress,
   fetchAllAddresses,
-} from "@/store/shop/address-slice";
+} from "../../store/shop/address-slice";
 import AddressCard from "./address-card";
 import { toast } from "sonner";
 
@@ -26,6 +26,9 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { addressList = [] } = useSelector((state) => state.shopAddress || {});
+  
+  console.log("Address component - addressList:", addressList);
+  console.log("Address component - selectedId:", selectedId);
 
   function handleManageAddress(event) {
     event.preventDefault();
@@ -94,32 +97,44 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   }, [dispatch, user?.id]);
 
   return (
-    <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <Card className="border border-black">
+      <div className="mb-6 p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
         {addressList.length > 0 ? (
-          addressList.map((singleAddressItem) => (
-            <AddressCard
-              key={singleAddressItem._id}
-              selectedId={selectedId}
-              handleDeleteAddress={handleDeleteAddress}
-              addressInfo={singleAddressItem}
-              handleEditAddress={handleEditAddress}
-              setCurrentSelectedAddress={setCurrentSelectedAddress}
-            />
-          ))
+          <>
+            <p className="text-sm font-semibold text-black col-span-full mb-4">
+              Select a delivery address:
+            </p>
+            {addressList.map((singleAddressItem) => (
+              <AddressCard
+                key={singleAddressItem._id}
+                selectedId={selectedId}
+                handleDeleteAddress={handleDeleteAddress}
+                addressInfo={singleAddressItem}
+                handleEditAddress={handleEditAddress}
+                setCurrentSelectedAddress={setCurrentSelectedAddress}
+              />
+            ))}
+          </>
         ) : (
-          <p className="text-muted-foreground col-span-full text-center py-4">
-            No addresses added yet
-          </p>
+          <div className="col-span-full text-center py-12">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 border border-black">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <p className="text-black font-semibold mb-2">No addresses added yet</p>
+            <p className="text-gray-600">Add your first delivery address below</p>
+          </div>
         )}
       </div>
       
-      <CardHeader>
-        <CardTitle>
+      <CardHeader className="border-t border-black pt-6">
+        <CardTitle className="text-xl font-bold text-black">
           {currentEditedId !== null ? "Edit Address" : "Add New Address"}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className="p-6 space-y-4">
         <CommonForm
           formControls={addressFormControls}
           formData={formData}

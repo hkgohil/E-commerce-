@@ -4,6 +4,8 @@ import adminProductsReducer from "./admin/product-slice";
 import shopProductsReducer from "./shop/products-slice";
 import shopCartReducer from "./shop/cart-slice";
 import shopReviewReducer from "./shop/review-slice";
+import shopSearchReducer from "./shop/search-slice";
+import shopAddressReducer from "./shop/address-slice";
 import commonFeature from "./common-slice";
 import shopOrders from "./shop/order-slice";
 
@@ -14,6 +16,8 @@ const store =configureStore({
         shopProducts: shopProductsReducer,
         shopCart: shopCartReducer,
         shopReview: shopReviewReducer,
+        shopSearch: shopSearchReducer,
+        shopAddress: shopAddressReducer,
         commonFeature: commonFeature,
         shopOrders: shopOrders,
     },

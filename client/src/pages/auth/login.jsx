@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonForm from "../../components/common/form";
-import { loginUser } from "@/store/auth-slice";
+import { loginUser } from "../../store/auth-slice";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
@@ -38,7 +38,7 @@ function Authlogin() {
     event.preventDefault();
     dispatch(loginUser(formData)).then((data) => {
       if (data?.payload?.success) {
-        toast(data?.payload?.message);
+        toast.success(data?.payload?.message);
         navigate("/shop/home");
       } else {
         toast.error(data?.payload?.message);
@@ -47,28 +47,30 @@ function Authlogin() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-6">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
-          Login to your account
-        </h1>
-        <p className="mt-2">
-          Don't have an account?
-          <Link
-            className="font-medium ml-2 text-primary hover:underline"
-            to="/auth/register"
-          >
-            Register
-          </Link>
-        </p>
+    <div className="min-h-screen w-full flex items-center justify-center bg-white">
+      <div className="w-full max-w-md space-y-8 p-8">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold tracking-tight text-black">
+            Login to your account
+          </h1>
+          <p className="mt-2 text-black">
+            Don't have an account?
+            <Link
+              className="font-medium ml-2 text-black hover:underline hover:text-gray-700"
+              to="/auth/register"
+            >
+              Register
+            </Link>
+          </p>
+        </div>
+        <CommonForm
+          formControls={loginFormControls}
+          buttonText={"Login"}
+          formData={formData}
+          setFormData={setFormData}
+          onSubmit={onSubmit}
+        />
       </div>
-      <CommonForm
-        formControls={loginFormControls}
-        buttonText={"Login"}
-        formData={formData}
-        setFormData={setFormData}
-        onSubmit={onSubmit}
-      />
     </div>
   );
 }
