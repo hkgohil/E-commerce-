@@ -2,6 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 import authRouter from "./Routes/auth/auth-routes.js";
 import adminProductsRouter from "./Routes/admin/products-routes.js";
 import adminOrderRouter from "./Routes/admin/order-routes.js";
@@ -15,15 +18,21 @@ import commonFeatureRouter from "./Routes/common/feature-routes.js";
 
 console.log("All routes imported successfully");
 
-mongoose.connect('mongodb+srv://hkgohil:hkgohil2025@cluster0.8vitreu.mongodb.net/').then(()=>console.log('MongoDB connected ')).catch((error)=>console.log(error));
+mongoose.connect(process.env.MONGODB_URI).then(()=>console.log('MongoDB connected ')).catch((error)=>console.log(error));
 const app=express()
 const PORT =process.env.PORT || 5000
 
 console.log('Starting server on port:', PORT);
 
+const corsOrigins = process.env.CORS_ORIGINS ? 
+  process.env.CORS_ORIGINS.split(',') : 
+  ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+
+console.log('CORS Origins:', corsOrigins);
+
 app.use(
     cors ({
-        origin : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'],
+        origin : corsOrigins,
         methods : ['GET','POST','DELETE','PUT'],
         allowedHeaders : [
             'content-type',

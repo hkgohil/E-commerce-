@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "/node_modules/.vite/deps/@reduxjs_toolkit.js?v=94fc24ec";
-import axios from "/node_modules/.vite/deps/axios.js?v=4395d2c2";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
   isAuthenticated: false,
